@@ -449,6 +449,32 @@ func TestContains(t *testing.T) {
 			cty.BoolVal(true),
 			false,
 		},
+		{ // null values
+			cty.EmptyTupleVal,
+			cty.NullVal(cty.DynamicPseudoType),
+			cty.BoolVal(false),
+			false,
+		},
+		{
+			cty.TupleVal([]cty.Value{
+				cty.NullVal(cty.DynamicPseudoType),
+			}),
+			cty.NullVal(cty.DynamicPseudoType),
+			cty.BoolVal(true),
+			false,
+		},
+		{
+			listOfStrings,
+			cty.NullVal(cty.DynamicPseudoType),
+			cty.BoolVal(false),
+			false,
+		},
+		{
+			listOfStrings,
+			cty.DynamicVal,
+			cty.UnknownVal(cty.Bool).RefineNotNull(),
+			false,
+		},
 	}
 
 	for _, test := range tests {
